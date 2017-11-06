@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
+import { ServersService } from './servers.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  constructor(private serversService: ServersService) {}
+
+  testVar = 'eeeeeeeeee';
+
   servers = [
     {
       name: 'Testserver',
@@ -27,5 +34,43 @@ export class AppComponent {
   }
   private generateId() {
     return Math.round(Math.random() * 10000);
+  }
+
+  getStuff(){
+    this.serversService.getStuff()
+      .subscribe(
+        (response: Response) => {
+          const data = response.json(); //this "unwraps" the data into a neat javascript object
+          console.log(data);
+        },
+        (error) => {
+          console.log(`it's an error: ${error}`);
+        }
+      );
+  }
+
+  updateStuff(){
+    this.serversService.updateStuff(this.testVar)
+      .subscribe(
+        (response: Response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(`it's an error: ${error}`);
+        }
+      );
+  }
+
+  getPokemon(){
+    this.serversService.getStuff()
+      .subscribe(
+        (response: Response) => {
+          const data = response.json();
+          console.log(data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
   }
 }
